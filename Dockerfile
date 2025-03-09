@@ -2,8 +2,10 @@
 FROM clojure:latest AS builder
 WORKDIR /app
 COPY project.clj .
+RUN lein deps
+
 COPY src/ src/
-RUN lein deps && lein uberjar
+RUN lein uberjar
 
 # Stage 2
 FROM amazoncorretto:17

@@ -47,6 +47,7 @@
   "Given a gemini query, sqlite response, current date and a question, it humanizes the response."
   [{:keys [text]} query response]
   (let [prompt (format prompts/humanize query response (now) text)
+        _ (println prompt)
         payload {:contents [{:parts [{:text prompt}]}]}
         response (client/post (:api-url config/gemini)
                               {:query-params {"key" (:api-key config/gemini)}

@@ -77,17 +77,29 @@
    O `amount` tem o valor do lançamento em float
    O `category` tem qual categoria daquela despesa em inglês (health, other)
    O `description` tem a descrição do lançamento (pra quem, e porquê eu paguei, ex dentista, carro, lavagem, médico)
-   O `type` diz apenas se é `credit` (cartão de crédito) ou `debit` (pix)
+   O `type` pode ser `credit_card`, `debit`, `pix` ou `boleto`
 
    Considerando que a data de hoje é: %s
    Crie uma query sqlite para responder a seguinte pergunta: %s
 
    # Instruções adicionais
    Dependendo da pergunta, considere trazer mais dados para uma resposta mais completa.
+   Se o usuário perguntar 'quais foram', 'no que eu gastei', 'qual a lista', 'onde gastei', traga apenas a lista de expenses ordenado por data.
+
    Se o usuário não te enviar o ano, considere o ano atual.
    Se o usuário não te enviar o mês, considere o mês atual.
    Se o usuário pedir não te enviar o dia, considere o dia de hoje.
-  
+   Se falar a partir do dia 5, considere o ano e o mês atual.
+
+   # Instruções SQL
+   Se você for fazer GROUP BY date, não traga os campos description, category e nem type.
+   Se ele perguntar quanto ele gastou no Pix, considere sempre na query type = 'pix'
+   Se ele perguntar quanto eu gastou no crédito ou no cartão, considere sempre na query type = 'credit_card'
+
+   Em todas as queries que você for utilizar date(now), você DEVE tirar também 3 horas por conta do timezone.
+   Exemplo: `SELECT date('now', '-1 day')` se torna `SELECT date('now', '-1 day', '-3 hours');`
+   Se você for usar a função date(now), passe sempre -3 hours.
+   
    Por exemplo:
    - Se ele te pedir o maior valor gasto, traga também o descritivo daquele valor.
    - Se ele te perguntar qual mês ele mais gastou dinheiro, traga também o valor total.
@@ -117,7 +129,7 @@
    - O `amount` tem o valor do lançamento em float
    - O `category` tem qual categoria daquela despesa em inglês (health, other)
    - O `description` tem a descrição do lançamento (pra quem, e porquê eu paguei, ex dentista, carro, lavagem, médico)
-   - O `type` diz apenas se é `credit` (cartão de crédito) ou `debit` (pix)
+   - O `type` pode ser `credit_card`, `debit`, `pix` ou `boleto`
 
    Você acabou de executar essa query na tabela de `expenses`:
    ```sql
@@ -133,6 +145,7 @@
    Caso o banco de dados te retorne uma lista, não tente somar valores.
    Use apenas a resposta dada pela query do banco de dados como verdade.
    Se o usuário estiver te pedindo para listar algo, não tem problema a resposta ser mais longa.
+   Formate as datas sempre em dd/MM/yyyy.
 
    Considerando que a data de hoje é: %s
    
